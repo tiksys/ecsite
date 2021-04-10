@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="text-center py-3">商品詳細</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            {% for picture in object.productpictures_set.all %}
+            {% if forloop.first %}
+            <img class="col-10" width="200px" height="200px" src={{ picture.picture.url }}>
+            {% else %}
+            <img class="col-5" width="200px" height="200px" src={{ picture.picture.url }}>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                </div>
+                <div class="card-body">
+                    <p>商品名: {{ object.name }}</p>
+                    <p>値段: ￥{{ object.price }}</p>
+                    <p>在庫数: {{ object.stock }}</p>
+                    {% if object.stock %}
+                        {% if is_added %}
+                            <p class="btn btn-danger">カートに追加済みです</p>
+                        {% else %}
+                            <p>数量：<input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ object.stock }}"></p>
+                            <button id="add_product" type="button" class="btn btn-primary">カートに追加</button>
+                        {% endif %}
+                    {% endif %}
+                    <input name="csrfToken" value="{{ csrf_token }}" type="hidden">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$('#add_product').click(function(){
+    var quantity = $("#quantity").val();
+    var token = $('input[name="csrfToken"]').attr('value');
+    $.ajaxSetup({
+        beforeSend: function(xhr){
+            xhr.setRequestHeader('X-CSRFToken', token);
+        }
+    })
+    $.ajax({
+        url: "{% url 'stores:add_product' %}",
+        type: "POST",
+        data: {product_id: "{{ object.id }}", quantity: quantity},
+        dataType: "json",
+        success: function(json){
+            if(json.message){
+                $('#add_product').attr('class', 'btn btn-danger');
+                $('#add_product').html('カートに登録済みです');
+                $('#add_product').prop('disabled', true);
+                alert(json.message);
+            }
+        },
+        error: function(error){
+            alert(error.responseJSON.message);
+        }
+    });
+});
+</script>
+{% endblock %}
