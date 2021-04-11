@@ -14,7 +14,7 @@
    <main class="form-signin">
       <form method="post" class="form-group">
          {% csrf_token %}
-         <h1 class="h3 mb-3 fw-normal">ログイン</h1>
+         <h1 class="h3 mb-3 fw-normal py-3">ログイン</h1>
          {% for item in form %}
             {% if item.field.widget.input_type == 'checkbox' %}
                <div class="checkbox mb-3">

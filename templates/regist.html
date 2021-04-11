@@ -26,7 +26,7 @@
 <main class="form-signin">
    <form method="post" class="form-group">
       {% csrf_token %}
-      <h1 class="h3 mb-3 fw-normal">ユーザ登録</h1>
+      <h1 class="h3 mb-3 fw-normal py-3">ユーザ登録</h1>
       {% for item in form %}
          <input type="{{ item.field.widget.input_type }}" class="form-control" {% if item.field.required %}required{% endif %} placeholder="{{item.label}}" name="{{item.name}}">
       {% endfor %}
