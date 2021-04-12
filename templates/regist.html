@@ -23,16 +23,30 @@
 </head>
 {% block content %}
 <body class="text-center">
-<main class="form-signin">
-   <form method="post" class="form-group">
-      {% csrf_token %}
-      <h1 class="h3 mb-3 fw-normal py-3">ユーザ登録</h1>
-      {% for item in form %}
-         <input type="{{ item.field.widget.input_type }}" class="form-control" {% if item.field.required %}required{% endif %} placeholder="{{item.label}}" name="{{item.name}}">
-      {% endfor %}
-      <button class="w-100 btn btn-lg btn-primary" type="submit">登録</button>
-   </form>
-   <a class="navbar-brand" href="{% url 'accounts:user_login' %}">ログイン</a>
-</main>
+   <main class="form-signin">
+      <h1 class="h3 mb-3 fw-normal">ユーザ登録</h1>
+      {% if regist_form.password.errors or regist_form.errors%}
+         <div>
+               <ul class="alert alert-danger list-unstyled">
+                  {% for error in regist_form.password.errors %}
+                  <li>{{ error }}</li>
+                  {% endfor %}
+                  {% for field in regist_form %}
+                     {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                     {% endfor %}
+                  {% endfor %}
+               </ul>
+         </div>
+      {% endif %}
+      <form method="post">
+         {% csrf_token %}
+         {% for item in regist_form %}
+            <input type="{{ item.field.widget.input_type }}" class="form-control" {% if item.field.required %}required{% endif %} placeholder="{{item.label}}" name="{{item.name}}">
+         {% endfor %}
+         <button class="w-100 btn btn-lg btn-primary" type="submit">登録</button>
+      </form>
+      <a class="navbar-brand" href="{% url 'accounts:user_login' %}">ログイン</a>
+   </main>
 </body>
 {% endblock %}

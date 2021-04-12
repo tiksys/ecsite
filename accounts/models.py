@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
 from django.urls import reverse_lazy
 
 
+
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
         if not email:
@@ -30,8 +31,8 @@ class UserManager(BaseUserManager):
         return user
 
 class Users(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=150)
-    email = models.EmailField(max_length=255, unique=True)
+    username = models.CharField('ユーザ名', max_length=150)
+    email = models.EmailField('メールアドレス', max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -41,4 +42,4 @@ class Users(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def get_absolute_url(self):
-        return reverse_lazy('accounts:home')
+        return reverse_lazy('stores:product_list')

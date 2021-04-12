@@ -1,9 +1,9 @@
 html,
-div　.text-center {
+body {
   height: 100%;
 }
 
-div　.text-center{
+body {
   display: flex;
   align-items: center;
   padding-top: 40px;

@@ -103,7 +103,7 @@ class Addresses(models.Model):
     address = models.CharField(max_length=200)
     user = models.ForeignKey(
         Users,
-        on_delete = models.CASCADE,
+        on_delete=models.CASCADE,
     )
 
     class Meta:
